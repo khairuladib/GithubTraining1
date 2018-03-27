@@ -1,0 +1,8 @@
+{
+  "name": "Tracktvt",
+  "app_id": "f44a7627",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

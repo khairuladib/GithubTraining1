@@ -1,0 +1,4 @@
+[0825/125218.042:ERROR:scoped_process_suspend.cc(31)] NtSuspendProcess: An attempt was made to access an exiting process.  (0xc000010a)
+[0825/125226.944:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[0825/125227.145:ERROR:exception_snapshot_win.cc(87)] thread ID 3596 not found in process
+[0825/125227.145:WARNING:crash_report_exception_handler.cc(62)] ProcessSnapshotWin::Initialize failed
