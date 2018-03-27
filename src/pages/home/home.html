@@ -1,0 +1,516 @@
+<ion-content padding>
+  <!-- Viewing User and Company Information -->
+  <content *ngIf="num == 0">
+    <button *ngIf="view == undefined" (click)="logoutUser()" ion-button color="dark" float-left>Log Out</button>
+    <button *ngIf="view != undefined" (click)="returnUser()" ion-button color="dark" float-right>Return</button>
+    <button *ngIf="view == undefined" (click)="editProfile()" ion-button color="dark" float-right>Edit Profile</button>
+    <h1 *ngIf="this.type == 'user'" style="color:#000000;text-align:center;"><br/>
+      CURRICULUM VITAE (CV)
+    </h1>
+    <h1 *ngIf="this.type == 'company'" style="color:#000000;text-align:center;"><br\>
+      COMPANY INFORMATION
+    </h1>
+    <div style="width:35%;height:150px;background-color:#e8ebef;" float-right>
+      <div *ngFor="let item of userRef | async">
+        <img style="height: 99%; width: 99%;" *ngIf="item.idNumber == userID" [src]="item.photo"/>
+      </div>
+      </div>
+
+    <ion-list *ngFor="let item of userRef | async" style="width:63%;">
+
+      <div *ngIf="item.idNumber == userID">
+        <div *ngIf="item.type == 'user'"><div></div>
+        <h6 style="text-align:center;background-color:#e8ebef;"><b>PERSONAL DETAILS</b></h6>
+        <h5 style="text-align:left;background-color:#e8ebef;"><u>Name:</u><br/>{{item.fullName}}</h5>
+        <h5 style="text-align:left;background-color:#e8ebef;"><u>Gender:</u><br/>{{item.gender}}</h5>
+        </div>
+        <div *ngIf="item.type == 'company'"><div></div>
+        <h6 style="text-align:center;background-color:#e8ebef;"><b>COMPANY DETAILS</b></h6>
+        <h5 style="text-align:left;background-color:#e8ebef;"><u>Company Name:</u><br/>{{item.compName}}</h5>
+        <h5 style="text-align:left;background-color:#e8ebef;"><u>Industrial Type:</u><br/>{{item.indType}}</h5>
+        </div>
+      </div>
+    </ion-list>
+    <div *ngFor="let item of userRef | async" style="width:100%;">
+      <div *ngIf="item.idNumber == userID">
+        <div *ngIf="item.type == 'user'">
+          <h5 style="text-align:left;background-color:#e8ebef;" float-lef><u>IC/Passport Number:</u><br/>{{item.idNumber}}</h5>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>IC Color:</u><br/>{{item.color}}</h5>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>Nationality:</u><br/>{{item.nationality}}</h5>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>Marital Status:</u><br/>{{item.marital}}</h5>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>Date of Birth:</u><br/>{{item.dob}}</h5>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>Driving License:</u><br/>{{item.liNumber}}</h5><br/>
+          
+          <div style="background-color: black;height: 2px;"></div>
+          <h6 style="text-align:center;background-color:#e8ebef;"><b>CONTACT DETAILS</b></h6>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>Email:</u><br/>{{item.email}}</h5>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>Contact Number:</u><br/>{{item.contactNum}}</h5>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>Emergency Contact Number:</u><br/>{{item.emNum}}</h5>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>Address:</u><br/>{{item.address}} {{item.postcode}}</h5><br/>
+          <div style="background-color: black;height: 2px;"></div>
+          <h6 style="text-align:center;background-color:#e8ebef;"><b>QUALIFICATION SKILLS</b></h6>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u> Qualifications:</u>
+            <div *ngIf="item.mdgree">+ Maste Degree</div>
+            <div *ngIf="item.degree">+ Degree</div>
+            <div *ngIf="item.hnd">+ Higher Diploma</div>
+            <div *ngIf="item.diploma">+ Diploma</div>
+            <div *ngIf="item.alevel">+ A'Level</div>
+            <div *ngIf="item.olevel">+ O'Level</div>
+            <div *ngIf="item.othQual">+ {{item.qual1}}</div></h5><br/>
+          <div style="background-color: black;height: 2px;"></div>
+
+          <h6 style="text-align:center;background-color:#e8ebef;"><b>LANGUAGE SKILLS</b></h6>
+          <h5 *ngIf="(item.engLang != undefined) && (item.engLang != '')" style="text-align:left;background-color:#e8ebef;"><u>English Language:</u><br/>{{item.engLang}}</h5>
+          <h5 *ngIf="(item.malLang != undefined) && (item.malLang != '')" style="text-align:left;background-color:#e8ebef;"><u>Malay Language:</u><br/>{{item.malLang}}</h5>
+          <h5 *ngIf="(item.lang1s != undefined) && (item.lang1s != '')" style="text-align:left;background-color:#e8ebef;"><u>{{item.lang1}}:</u><br/>{{item.lang1s}}</h5><br/>
+          <div style="background-color: black;height: 2px;"></div>
+
+          <h6 style="text-align:center;background-color:#e8ebef;"><b>JOB EXPERIENCE</b></h6>
+          <h5 *ngIf="item.jobExp != '' && item.jobExp != undefined" style="text-align:left;background-color:#e8ebef;"><u>Company Name:</u><br/>{{item.jobExp}}
+            <br/>as {{item.jobExpPos}} for {{item.jobExpYear}}</h5>
+          <h5 *ngIf="item.jobExp1 != '' && item.jobExp1 != undefined" style="text-align:left;background-color:#e8ebef;"><u>Company Name:</u><br/>{{item.job1Exp}}
+            <br/>as {{item.jobExp1Pos}} for {{item.jobExp1Year}}</h5>
+            <h5 *ngIf="item.jobExp2 != '' && item.jobExp2 != undefined" style="text-align:left;background-color:#e8ebef;"><u>Company Name:</u><br/>{{item.jobExp2}}
+            <br/>as {{item.jobExp2Pos}} for {{item.jobExp2Year}}</h5>
+            <h5 *ngIf="item.jobExp3 != '' && item.jobExp3 != undefined" style="text-align:left;background-color:#e8ebef;"><u>Company Name:</u><br/>{{item.jobExp3}}
+            <br/>as {{item.jobExp3Pos}} for {{item.jobExp3Year}}</h5>
+            <h5 *ngIf="item.jobExp4 != '' && item.jobExp4 != undefined" style="text-align:left;background-color:#e8ebef;"><u>Company Name:</u><br/>{{item.jobExp4}}
+            <br/>as {{item.jobExp4Pos}} for {{item.jobExp4Year}}</h5>
+          <div style="background-color: black;height: 2px;"></div>
+        </div>
+      </div>
+
+       <div *ngIf="item.idNumber == userID">
+        <div *ngIf="item.type == 'company'">
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>Operation Time:</u>
+            <br/><i *ngIf="item.monday">Monday </i>
+            <i *ngIf="item.tuesday">Tuesday</i>
+            <i *ngIf="item.wednesday">Wednesday</i>
+            <i *ngIf="item.thursday">Thursday</i>
+            <i *ngIf="item.friday">Friday</i>
+            <i *ngIf="item.saturday">Saturday</i>
+            <i *ngIf="item.sunday">Sunday</i>
+            <br/><div *ngIf="item.firstStart != '' && item.firstEnd != ''">Morning: {{item.firstStart}} until {{item.firstEnd}}</div>
+            <div *ngIf="item.secStart != '' && item.sectEnd != ''">Afternoon: {{item.secStart}} until {{item.secEnd}}</div>
+            <div *ngIf="item.firstStart == '' || item.firstEnd == ''">Morning: N/A</div>
+            <div *ngIf="item.secStart == '' || item.secEnd == ''">Afternoon: N/A</div><br/>
+            <div *ngIf="item.except != '' && item.except != undefined"><i>Exception: {{item.except}}</i></div>
+            <div *ngIf="item.firstStartE != '' && item.firstEndE != '' && item.firstStartE != undefined && item.firstEndE != undefined">Morning: {{item.firstStartE}} until {{item.firstEndE}}</div>
+            <div *ngIf="item.secStartE != '' && item.sectEndE != '' && item.secStartE != undefined && item.sectEndE != undefined">Afternoon: {{item.secStartE}} until {{item.secEndE}}</div>
+          </h5>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>About Company:</u><br/>{{item.desc}}</h5>
+          <div style="background-color: black;height: 2px;"></div>
+          <h6 style="text-align:center;background-color:#e8ebef;"><b>CONTACT DETAILS</b></h6>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>Email:</u><br/>{{item.email}}</h5>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>Contact Number:</u><br/>{{item.contactNum}}</h5>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>Address:</u><br/>{{item.address}} {{item.postcode}}</h5><br/>
+          <h5 style="text-align:left;background-color:#e8ebef;"><u>Location:</u></h5>
+        </div>
+      </div>
+    </div>
+  </content>
+  
+  <!-- Editing User and Company Information -->
+  <content *ngIf="num == 1"><form>
+    <div *ngFor="let item of userRef | async">
+      <div *ngIf="item.idNumber == userID">
+        <button (click)="saving()" ion-button color="dark" float-left>SAVE</button>
+        <button (click)="canceling()" ion-button color="dark" float-right>CANCEL</button>
+
+        <h1 *ngIf="this.type == 'user'" style="color:#000000;text-align:center;"><br/><br/>
+          CURRICULUM VITAE (CV)
+        </h1>
+        <h1 *ngIf="this.type == 'company'" style="color:#000000;text-align:center;"><br\><br\>
+          COMPANY INFORMATION
+        </h1>
+
+        <div style="width:35%;height:150px;background-color:#e8ebef;" float-right>
+          <img [src]="item.photo" width="99%" (click)="profilePic(item.photo)"/>
+        </div>
+
+        <ion-list *ngFor="let item of userRef | async" style="width:63%;">
+          <div *ngIf="item.idNumber == userID">
+            <div *ngIf="item.type == 'user'"><div></div>
+              <h6 style="text-align:center;background-color:#e8ebef;"><b>PERSONAL DETAILS</b></h6>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Full Name:</ion-label>
+                <ion-input type="text" style="color:#000000;" #fullName [(ngModel)]="item.fullName" (ngModelChange)="item.fullName = $event.toLocaleUpperCase()" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Gender:</ion-label>
+                <ion-select style="color:#000000;border-bottom: solid lime 0.0165px;" #gender [(ngModel)]="item.gender" [ngModelOptions]="{standalone: true}">
+                  <ion-option value="Female">Female</ion-option>
+                  <ion-option value="Male">Male</ion-option>
+                </ion-select>
+              </ion-item>
+            </div>
+
+            <div *ngIf="item.type == 'company'"><div></div>
+              <h6 style="text-align:center;background-color:#e8ebef;"><b>COMPANY DETAILS</b></h6>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Company Name:</ion-label>
+                <ion-input type="text" disabled="true" style="color:#000000;" #compName [(ngModel)]="item.compName" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Industrial Type:</ion-label>
+                <ion-select #indType [(ngModel)]="userDetail.indType" [ngModelOptions]="{standalone: true}">
+                  <ion-option value="Private">Private</ion-option>
+                  <ion-option value="Government">Government</ion-option>
+                </ion-select>
+              </ion-item>
+            </div>
+          </div>
+        </ion-list>
+        <div *ngFor="let item of userRef | async" style="width:100%;">
+          <div *ngIf="item.idNumber == userID">
+            <div *ngIf="item.type == 'user'">
+              <ion-item>
+                <ion-label floating>IC/Passport Number</ion-label>
+                  <ion-input type="text" disabled="true" [(ngModel)]="item.idNumber" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item >
+                <ion-label>Color</ion-label>
+                  <ion-select #color [(ngModel)]="item.color" [ngModelOptions]="{standalone: true}">
+                  <ion-option value="Green">G - Green</ion-option>
+                  <ion-option value="Red">R - Red</ion-option>
+                  <ion-option value="Yellow">Y - Yellow</ion-option>
+                  <ion-option value="Purple">P - Purple</ion-option>
+                </ion-select>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Nationality:</ion-label>
+                <ion-select #nationality [(ngModel)]="item.nationality" [ngModelOptions]="{standalone: true}">
+                  <ion-option value="America">America</ion-option>
+                  <ion-option value="British">British</ion-option>
+                  <ion-option value="Brunei">Brunei</ion-option>
+                  <ion-option value="Chinese">Chinese</ion-option>
+                  <ion-option value="India">India</ion-option>
+                  <ion-option value="Indonesia">Indonesia</ion-option>
+                  <ion-option value="Malaysia">Malaysia</ion-option>
+                  <ion-option value="Singapore">Singapore</ion-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-label floating>Marital Status:</ion-label>
+                  <ion-select #marital [(ngModel)]="item.marital" style="border-bottom: solid lime 0.0165px;" [ngModelOptions]="{standalone: true}">
+                    <ion-option value="Single">Single</ion-option>
+                    <ion-option value="Married">Married</ion-option>
+                    <ion-option value="Divorced">Divorced</ion-option>
+                  </ion-select>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label float-up>Date of Birth:</ion-label>
+                <ion-datetime displayFormat="DD/MM/YYYY" max="2000" style="border-bottom: solid lime 0.0165px;" #dob [(ngModel)]="dobSet" [ngModelOptions]="{standalone: true}" placeholder="{{item.dob}}" ></ion-datetime>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Driving License: (Only if have)</ion-label>
+                  <ion-input type="text" #liNumber [(ngModel)]="item.liNumber" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item><br/>
+
+              <div style="background-color: black;height: 2px;"></div>
+              <h6 style="text-align:center;background-color:#e8ebef;"><b>CONTACT DETAILS</b></h6>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Email:</ion-label>
+                <ion-input type="text" style="color:#000000;" #email [(ngModel)]="item.email" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Contact Number: (eg. +6738123456)</ion-label>
+                <ion-input type="text" style="color:#000000;" #contactNum [(ngModel)]="item.contactNum" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Emergency Number: (eg. +6738123456)</ion-label>
+                <ion-input type="text" style="color:#000000;" #emNum [(ngModel)]="item.emNum" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Address:</ion-label>
+                <ion-textarea style="height: 90px;color:#000000;" #address [(ngModel)]="item.address" [ngModelOptions]="{standalone: true}"></ion-textarea>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label>Postal Code:</ion-label>
+                <ion-input type="text" style="color:#000000;" #postcode [(ngModel)]="item.postcode" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item><br/>
+
+              <div style="background-color: black;height: 2px;"></div>
+              <h6 style="text-align:center;background-color:#e8ebef;"><b>QUALIFICATION SKILLS</b></h6>
+              <br/>
+              <ion-item>
+                <ion-label>Master Degree</ion-label>
+                <ion-checkbox #mdgree [(ngModel)]="item.mdgree" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Degree</ion-label>
+                <ion-checkbox #degree [(ngModel)]="item.degree" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Higher Diploma</ion-label>
+                <ion-checkbox #hnd [(ngModel)]="item.hnd" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Diploma</ion-label>
+                <ion-checkbox #diploma [(ngModel)]="item.diploma" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>A'Level</ion-label>
+                <ion-checkbox #alevel [(ngModel)]="item.alevel" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>O'Level</ion-label>
+                <ion-checkbox #olevel [(ngModel)]="item.olevel" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Other qualification:</ion-label>
+                <ion-checkbox #othQual [(ngModel)]="item.othQual" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item *ngIf="item.othQual">
+                <ion-label>Specify:</ion-label>
+                <ion-input type="text" style="color:#000000;" #qual1 [(ngModel)]="item.qual1" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item><br/>
+
+              <div style="background-color: black;height: 2px;"></div>
+              <h6 style="text-align:center;background-color:#e8ebef;"><b>LANGUAGE SKILLS</b></h6>
+              <ion-item style="background-color:transparent;">
+                <ion-label>English Language</ion-label>
+                  <ion-select #engLang [(ngModel)]="item.engLang" [ngModelOptions]="{standalone: true}">
+                  <ion-option value="Excellent">Excellent</ion-option>
+                  <ion-option value="Moderate">Moderate</ion-option>
+                  <ion-option value="Poor">Poor</ion-option>
+                </ion-select>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label>Malay Language</ion-label>
+                  <ion-select #malLang [(ngModel)]="item.malLang" [ngModelOptions]="{standalone: true}">
+                  <ion-option value="Excellent">Excellent</ion-option>
+                  <ion-option value="Moderate">Moderate</ion-option>
+                  <ion-option value="Poor">Poor</ion-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-label>Other language:</ion-label>
+                <ion-checkbox #other1 [(ngModel)]="item.other1" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item *ngIf="item.other1">
+                <ion-label>Specify:</ion-label>
+                <ion-input type="text" placeholder="Please specify.." style="color:#000000;" #lang1 [(ngModel)]="item.lang1" [ngModelOptions]="{standalone: true}"></ion-input>
+                <ion-select #lang1s [(ngModel)]="item.lang1s" [ngModelOptions]="{standalone: true}">
+                  <ion-option value="Excellent">Excellent</ion-option>
+                  <ion-option value="Moderate">Moderate</ion-option>
+                  <ion-option value="Poor">Poor</ion-option>
+                </ion-select>
+              </ion-item><br/>
+
+              <div style="background-color: black;height: 2px;"></div>
+              <h6 style="text-align:center;background-color:#e8ebef;"><b>JOB EXPERIENCE</b></h6>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Companies Name:</ion-label>
+                <ion-input type="text" style="color:#000000;" #jobExp [(ngModel)]="item.jobExp" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label>Position:</ion-label>
+                <ion-input type="text" style="color:#000000;" #jobExpPos [(ngModel)]="item.jobExpPos" [ngModelOptions]="{standalone: true}"></ion-input>
+                <ion-select #jobExpYear [(ngModel)]="item.jobExpYear" [ngModelOptions]="{standalone: true}">
+                  <ion-option value="Less than 1 year">Less than 1 Year</ion-option>
+                  <ion-option value="Less than 2 years">Less than 2 Years</ion-option>
+                  <ion-option value="More than 2 years">More than 2 years</ion-option>
+                </ion-select>
+              </ion-item>
+              <ion-item *ngIf="(item.jobExpTotal >= 1)" style="background-color:transparent;">
+                <ion-label floating>Companies Name:</ion-label>
+                <ion-input type="text" style="color:#000000;" #jobExp1 [(ngModel)]="item.jobExp1" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="(item.jobExpTotal >= 1)">
+                <ion-label>Position:</ion-label>
+                <ion-input type="text" style="color:#000000;" #jobExp1Pos [(ngModel)]="item.jobExp1Pos" [ngModelOptions]="{standalone: true}"></ion-input>
+                <ion-select #jobExp1Year [(ngModel)]="item.jobExp1Year" [ngModelOptions]="{standalone: true}">
+                  <ion-option value="Less than 1 year">Less than 1 Year</ion-option>
+                  <ion-option value="Less than 2 years">Less than 2 Years</ion-option>
+                  <ion-option value="More than 2 years">More than 2 years</ion-option>
+                </ion-select>
+              </ion-item>
+              <ion-item *ngIf="(item.jobExpTotal >= 2)" style="background-color:transparent;">
+                <ion-label floating>Companies Name:</ion-label>
+                <ion-input type="text" style="color:#000000;" #jobExp2 [(ngModel)]="item.jobExp2" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="(item.jobExpTotal >= 2)">
+                <ion-label>Position:</ion-label>
+                <ion-input type="text" style="color:#000000;" #jobExp2Pos [(ngModel)]="item.jobExp2Pos" [ngModelOptions]="{standalone: true}"></ion-input>
+                <ion-select #jobExp2Year [(ngModel)]="item.jobExp2Year" [ngModelOptions]="{standalone: true}">
+                  <ion-option value="Less than 1 year">Less than 1 Year</ion-option>
+                  <ion-option value="Less than 2 years">Less than 2 Years</ion-option>
+                  <ion-option value="More than 2 years">More than 2 years</ion-option>
+                </ion-select>
+              </ion-item>
+              <ion-item *ngIf="(item.jobExpTotal >= 3)" style="background-color:transparent;">
+                <ion-label floating>Companies Name:</ion-label>
+                <ion-input type="text" style="color:#000000;" #jobExp3 [(ngModel)]="item.jobExp3" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="(item.jobExpTotal >= 3)">
+                <ion-label>Position:</ion-label>
+                <ion-input type="text" style="color:#000000;" #jobExp3Pos [(ngModel)]="item.jobExp3Pos" [ngModelOptions]="{standalone: true}"></ion-input>
+                <ion-select #jobExp3Year [(ngModel)]="item.jobExp3Year" [ngModelOptions]="{standalone: true}">
+                  <ion-option value="Less than 1 year">Less than 1 Year</ion-option>
+                  <ion-option value="Less than 2 years">Less than 2 Years</ion-option>
+                  <ion-option value="More than 2 years">More than 2 years</ion-option>
+                </ion-select>
+              </ion-item>
+              <ion-item *ngIf="(item.jobExpTotal >= 4)" style="background-color:transparent;">
+                <ion-label floating>Companies Name:</ion-label>
+                <ion-input type="text" style="color:#000000;" #jobExp4 [(ngModel)]="item.jobExp4" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="(item.jobExpTotal >= 4)">
+                <ion-label>Position:</ion-label>
+                <ion-input type="text" style="color:#000000;" #jobExp4Pos [(ngModel)]="item.jobExp4Pos" [ngModelOptions]="{standalone: true}"></ion-input>
+                <ion-select #jobExp4Year [(ngModel)]="item.jobExp4Year" [ngModelOptions]="{standalone: true}">
+                  <ion-option value="Less than 1 year">Less than 1 Year</ion-option>
+                  <ion-option value="Less than 2 years">Less than 2 Years</ion-option>
+                  <ion-option value="More than 2 years">More than 2 years</ion-option>
+                </ion-select>
+              </ion-item><br/>
+              <button *ngIf="(item.jobExp != undefined) && (item.jobExp != '')
+              && (item.jobExpPos != undefined) && (item.jobExpPos != '')
+              && (item.jobExpYear != undefined) && (item.jobExpYear != '') && (item.jobExpTotal == 0)" ion-button color="balanced" block style="font-weight:600;color:#FFFFFF;background-color:#000000;" (click)="jobAdd(item.jobExpTotal)" >
+                Add More
+              </button>
+              <button *ngIf="(item.jobExp1 != undefined) && (item.jobExp1 != '')
+              && (item.jobExp1Pos != undefined) && (item.jobExp1Pos != '')
+              && (item.jobExp1Year != undefined) && (item.jobExp1Year != '') && (item.jobExpTotal == 1)" ion-button color="balanced" block style="font-weight:600;color:#FFFFFF;background-color:#000000;" (click)="jobAdd(item.jobExpTotal)" >
+                Add More
+              </button>
+              <button *ngIf="(item.jobExp2 != undefined) && (item.jobExp2 != '')
+              && (item.jobExp2Pos != undefined) && (item.jobExp2Pos != '')
+              && (item.jobExp2Year != undefined) && (item.jobExp2Year != '') && (item.jobExpTotal == 2)" ion-button color="balanced" block style="font-weight:600;color:#FFFFFF;background-color:#000000;" (click)="jobAdd(item.jobExpTotal)" >
+                Add More
+              </button>
+              <button *ngIf="(item.jobExp3 != undefined) && (item.jobExp3 != '')
+              && (item.jobExp3Pos != undefined) && (item.jobExp3Pos != '')
+              && (item.jobExp3Year != undefined) && (item.jobExp3Year != '') && (item.jobExpTotal == 3)" ion-button color="balanced" block style="font-weight:600;color:#FFFFFF;background-color:#000000;" (click)="jobAdd(item.jobExpTotal)" >
+                Add More
+              </button>
+              <button *ngIf="(item.jobExp4 != undefined) && (item.jobExp4 != '')
+              && (item.jobExp4Pos != undefined) && (item.jobExp4Pos != '')
+              && (item.jobExp4Year != undefined) && (item.jobExp4Year != '') && (item.jobExpTotal == 4)" ion-button color="balanced" block style="font-weight:600;color:#FFFFFF;background-color:#000000;" (click)="jobAdd(item.jobExpTotal)" >
+                DONE
+              </button>
+              <br/>
+              <div style="background-color: black;height: 2px;"></div>
+            </div>
+          </div>
+
+          <div *ngIf="item.idNumber == userID">
+            <div *ngIf="item.type == 'company'">
+              <ion-item style="background-color:transparent;">
+                <ion-label>Operation Time:</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Monday</ion-label>
+                <ion-checkbox #monday [(ngModel)]="item.monday" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Tuesday</ion-label>
+                <ion-checkbox #tuesday [(ngModel)]="item.tuesday" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Wednesday</ion-label>
+                <ion-checkbox #wednesday [(ngModel)]="item.wednesday" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Thursday</ion-label>
+                <ion-checkbox #thursday [(ngModel)]="item.thursday" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Friday</ion-label>
+                <ion-checkbox #friday [(ngModel)]="item.friday" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Saturday</ion-label>
+                <ion-checkbox #saturday [(ngModel)]="item.saturday" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Sunday</ion-label>
+                <ion-checkbox #sunday [(ngModel)]="item.sunday" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label>Morning Session:</ion-label>
+                <ion-datetime displayFormat="HH:mm" max="12:00" style="border-bottom: solid lime 0.0165px;" [(ngModel)]="fstStart" [ngModelOptions]="{standalone: true}"></ion-datetime>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label>until</ion-label>
+                <ion-datetime displayFormat="HH:mm" max="12:00" style="border-bottom: solid lime 0.0165px;" [(ngModel)]="fstEnd" [ngModelOptions]="{standalone: true}"></ion-datetime>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label>Afternoon Session:</ion-label>
+                <ion-datetime displayFormat="HH:mm" min="12:00" style="border-bottom: solid lime 0.0165px;" [(ngModel)]="sndStart" [ngModelOptions]="{standalone: true}"></ion-datetime>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label>until</ion-label>
+                <ion-datetime displayFormat="HH:mm" min="12:00" style="border-bottom: solid lime 0.0165px;" [(ngModel)]="sndEnd" [ngModelOptions]="{standalone: true}"></ion-datetime>
+              </ion-item><br/>
+              <p>*Set the following if got different operating time on the following days.</p>
+              <ion-item>
+                
+                <ion-label>Exception:</ion-label>
+                <ion-select #except [(ngModel)]="item.except" [ngModelOptions]="{standalone: true}">
+                  <ion-option *ngIf="item.monday" value="Monday">Monday</ion-option>
+                  <ion-option *ngIf="item.tuesday" value="Tuesday">Tuesday</ion-option>
+                  <ion-option *ngIf="item.wednesday" value="Wednesday">Wednesday</ion-option>
+                  <ion-option *ngIf="item.thursday" value="Thursday">Thursday</ion-option>
+                  <ion-option *ngIf="item.friday" value="Friday">Friday</ion-option>
+                  <ion-option *ngIf="item.saturday" value="Saturday">Saturday</ion-option>
+                  <ion-option *ngIf="item.sunday" value="Sunday">Sunday</ion-option>
+                  <ion-option value="">None</ion-option>
+                </ion-select>
+
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label>Morning Session:</ion-label>
+                <ion-datetime displayFormat="HH:mm" max="12:00" style="border-bottom: solid lime 0.0165px;" [(ngModel)]="fstStartE" [ngModelOptions]="{standalone: true}"></ion-datetime>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label>until</ion-label>
+                <ion-datetime displayFormat="HH:mm" max="12:00" style="border-bottom: solid lime 0.0165px;" [(ngModel)]="fstEndE" [ngModelOptions]="{standalone: true}"></ion-datetime>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label>Afternoon Session:</ion-label>
+                <ion-datetime displayFormat="HH:mm" min="12:00" style="border-bottom: solid lime 0.0165px;" [(ngModel)]="sndStartE" [ngModelOptions]="{standalone: true}"></ion-datetime>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label>until</ion-label>
+                <ion-datetime displayFormat="HH:mm" min="12:00" style="border-bottom: solid lime 0.0165px;" [(ngModel)]="sndEndE" [ngModelOptions]="{standalone: true}"></ion-datetime>
+              </ion-item>
+              <ion-item>
+              </ion-item><br/>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Description: (Rules and Regulations)</ion-label>
+                <ion-textarea style="height: 90px;color:#000000;" #desc [(ngModel)]="item.desc" [ngModelOptions]="{standalone: true}"></ion-textarea>
+              </ion-item>
+              <br/>
+
+              <div style="background-color: black;height: 2px;"></div>
+              <h6 style="text-align:center;background-color:#e8ebef;"><b>CONTACT DETAILS</b></h6>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Email:</ion-label>
+                <ion-input type="text" style="color:#000000;" #compEmail [(ngModel)]="item.email" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Contact Number: (eg. +6738123456)</ion-label>
+                <ion-input type="text" style="color:#000000;" #compcontactNum [(ngModel)]="item.contactNum" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label floating>Address:</ion-label>
+                <ion-textarea style="height: 90px;color:#000000;" #compAddress [(ngModel)]="item.address" [ngModelOptions]="{standalone: true}"></ion-textarea>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label>Postal Code:</ion-label>
+                <ion-input type="text" style="color:#000000;" #postcode [(ngModel)]="item.postcode" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item style="background-color:transparent;">
+                <ion-label><h6 style="color: grey;" float-left>Location:</h6><button (click)="editLocation()" style="color: white; background-color: black;" float-right>Change Location</button></ion-label>
+              </ion-item>
+              <div style="background-color: black;height: 2px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div></form>
+  </content>
+  <div #map id="map"></div>
+</ion-content>

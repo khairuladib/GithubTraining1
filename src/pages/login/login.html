@@ -1,0 +1,73 @@
+<ion-content *ngIf="!guest" padding>
+  <div class="spacer" style="height:5%;"></div>
+    <div>
+      <img src="assets/logos.png" style="
+        display:block;width:90%;height:100%;
+        margin-left:auto;margin-right:auto;"/>
+    </div>
+  <div class="spacer" style="height:10px;"></div>
+  <ion-item style="background-color:transparent;">
+    <ion-label style="color: #222;">LOGIN as: </ion-label>
+    <ion-select #logType>
+      <ion-option value="User">User (JobSeeker)</ion-option>
+      <ion-option value="Company">Company</ion-option>
+    </ion-select>
+  </ion-item>
+  <form>
+    <ion-list *ngIf="logType.value == 'User'"><ion-item style="background-color:transparent;">
+        <ion-label floating>
+        IC/License Number</ion-label>
+        <ion-input type="text" #idNumber [(ngModel)]="caps" (ngModelChange)="caps = $event.toLocaleUpperCase()" [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item></ion-list>
+    <ion-list *ngIf="logType.value == 'Company'"><ion-item style="background-color:transparent;">
+        <ion-label floating>
+        Company Name</ion-label>
+        <ion-input type="text" #idNumber [(ngModel)]="caps" (ngModelChange)="caps = $event.toLocaleUpperCase()" [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item></ion-list>
+
+    <ion-list *ngIf="logType.value != ''"><ion-item style="background-color:transparent;">
+        <ion-label floating>
+        Password</ion-label>
+        <ion-input type="password" #password></ion-input>
+    </ion-item></ion-list>
+
+    <button *ngIf="logType.value != ''" style="color:#222;background-color:transparent;" (click)="resetPassword()">
+    - Forgot your password?</button>
+
+    <div class="spacer" style="width:300px;height:20px;"></div>
+
+    <button *ngIf="logType.value == ''" ion-button disabled="true" color="balanced" block style="
+    font-weight:500;color:#FFFFFF;border-radius:2px 2px 2px 2px;background-color:#000000"
+    (click)="signInUser()">
+      Log in
+    </button>
+    <button *ngIf="logType.value != ''" ion-button color="balanced" block style="
+    font-weight:500;color:#FFFFFF;border-radius:2px 2px 2px 2px;background-color:#000000"
+    (click)="signInUser()">
+      Log in
+    </button>
+
+    <button ion-button clear color="dark" block (click)="presentActionSheet()">
+      Register
+    </button>
+
+    <button ion-button clear color="dark" style="font-style: italic;" block (click)="goGuest()">
+      or Login as Guest
+    </button>
+  </form>
+</ion-content>
+
+<ion-content *ngIf="guest" padding>
+  <button (click)="goBack()" ion-button color="dark" style="width: 45%;" float-right>Done</button>
+  <h2 style="text-align:center;"><br/>
+    <br/>Available Job:</h2>
+  <ion-list *ngFor="let item of jobListRef | async">
+    <ion-item style="background-color: #222;">
+      <h2 style="color: #FFFFFF"> {{item.compName.toUpperCase()}}</h2>
+      <h3 style="color: #FFFFFF">Job Offer: {{item.jobName}}</h3>
+      <h3 style="color: #FFFFFF">Requirements: {{item.reqSkill}}</h3>
+      <h3 style="color: #FFFFFF">Hiring: {{item.noApp}}</h3>
+      <h3 style="color: #FFFFFF">Expiration Date: {{item.expDate}}</h3>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,300 @@
+<!-- -------------------------------------------- -->
+  <ion-content *ngIf="num == 0" padding>
+    <button (click)="callInterview()" ion-button color="dark" style="width: 45%;" float-left>Interview</button>
+    <button (click)="addJob()" ion-button color="dark" style="width: 45%;" float-right>Job Applied</button>
+    <h2 style="text-align:center;"><br/>
+      <br/>Available Job:</h2>
+      <ion-searchbar (ionInput)="getItems($event)" style="background-color: #000000;"></ion-searchbar><br/>
+    <ion-list *ngFor="let item of searchList">
+      <ion-item (click)="presentUserActionSheet(item)" style="background-color: #222;">
+        <h2 style="color: #FFFFFF"> {{item.compName}}</h2>
+        <h3 style="color: #FFFFFF">Job Offer: {{item.jobName}}</h3>
+        <h3 style="color: #FFFFFF">Requirements: {{item.reqSkill}}</h3>
+        <h3 style="color: #FFFFFF">Hiring: {{item.noApp}}</h3>
+        <h2 style="color: #FFFFFF;">Offer Expired: {{item.expDate}}</h2>
+      </ion-item>
+    </ion-list>
+    <div class="spacer" style="height:60px;"></div>
+  </ion-content>
+
+<!-- -------------------------------------------- -->
+  <ion-content *ngIf="num == 1" padding>
+    <button (click)="viewApp()" ion-button color="dark" style="width: 45%;" float-left>Applicants</button>
+    <button (click)="addVacancy()" ion-button color="dark" style="width: 45%;" float-right>Add Job</button>
+    <h2 style="text-align:center;"><br/><br/>Vacancies Offered:</h2><br/>
+    <div>
+    <ion-list *ngFor="let item of vacanciesRef | async">
+      <ion-item *ngIf="item.id+otluser+item.jobName == item.idNumber" (click)="presentCompActionSheet(item)" style="background-color: #222;">
+        <h2 style="color: #FFFFFF;">Job Offer: {{item.jobName}}</h2>
+        <h2 style="color: #FFFFFF;">Requirements: {{item.reqSkill}}</h2>
+        <h2 style="color: #FFFFFF;">Hiring: {{item.noApp}}</h2>
+        <h2 style="color: #FFFFFF;">Offer Expired: {{item.expDate}}</h2>
+      </ion-item>
+    </ion-list>
+    </div>
+    <div class="spacer" style="height:60px;"></div>
+  </ion-content>
+
+<!-- -------------------------------------------- -->
+  <ion-content *ngIf="num == 2" padding>
+    <div *ngIf="mun == 'company'">
+      <button (click)="hiring()" ion-button color="dark" style="width: 26%;" float-left>Hiring</button>
+      <button (click)="checkBack()" ion-button color="dark" style="width: 19%;" float-right>Back</button>
+    <br/><br/><h1>Current Applicants: </h1><br/>
+    <ion-list *ngFor="let item of jobListRef | async">
+      <ion-item (click)="presentSelActionSheet(item)" style="background-color: #222;">
+        <h2 style="color: #FFFFFF;">{{item.jobName}}: Applied by {{item.idNumber}}</h2>
+      </ion-item>
+    </ion-list>
+    </div>
+
+    <div *ngIf="mun == 'user'">
+      <button (click)="checkBack()" ion-button color="dark" style="width: 19%;" float-right>Back</button>
+    <br/><h1>Current Job: </h1><br/>
+    <ion-list *ngFor="let item of appListRef | async">
+      <ion-item *ngIf="item.noApp > 0 && item.label != 'saved'" (click)="presentSelActionSheet(item)" style="background-color: #222;">
+          <h2 style="color: #FFFFFF;">Job Offer: {{item.jobName}}</h2>
+          <h2 style="color: #FFFFFF;">Requirements: {{item.reqSkill}}</h2>
+          <h2 style="color: #FFFFFF;">Hiring: {{item.noApp}}</h2>
+          <h2 style="color: #FFFFFF;">Offer Expired: {{item.expDate}}</h2>
+      </ion-item>
+      <ion-item *ngIf="item.noApp == 0 && item.label != 'saved'" (click)="presentSelActionSheet(item)" style="background-color: grey;">
+          <h2 style="color: #FFFFFF;">Job Offer: {{item.jobName}}</h2>
+          <h2 style="color: #FFFFFF;">Requirements: No Longer Available</h2>
+          <h2 style="color: #FFFFFF;">Offer Expired: {{item.expDate}}</h2>
+      </ion-item>
+    </ion-list>
+    <br/><h1>Saved Job: </h1><br/>
+      <ion-list *ngFor="let item of appListRef | async">
+      <ion-item *ngIf="item.noApp > 0  && item.label == 'saved'" (click)="presentUserActionSheet(item)" style="background-color: #222;">
+          <h2 style="color: #FFFFFF;">Job Offer: {{item.jobName}}</h2>
+          <h2 style="color: #FFFFFF;">Requirements: {{item.reqSkill}}</h2>
+          <h2 style="color: #FFFFFF;">Hiring: {{item.noApp}}</h2>
+          <h2 style="color: #FFFFFF;">Offer Expired: {{item.expDate}}</h2>
+      </ion-item>
+      <ion-item *ngIf="item.noApp == 0 && item.label == 'saved'" (click)="presentSelActionSheet(item)" style="background-color: grey;">
+          <h2 style="color: #FFFFFF;">Job Offer: {{item.jobName}}</h2>
+          <h2 style="color: #FFFFFF;">Requirements: No Longer Available</h2>
+          <h2 style="color: #FFFFFF;">Offer Expired: {{item.expDate}}</h2>
+      </ion-item>
+    </ion-list>
+    </div>
+    <div class="spacer" style="height:60px;"></div>
+
+  </ion-content>
+
+<!-- -------------------------------------------- -->
+  <ion-content *ngIf="num == 3" padding>
+    <div *ngIf="mun == 'company'">
+      <button (click)="checkBack()" ion-button color="dark" style="width: 19%;" float-right>Back</button>
+    <br/><h1>Hiring: </h1><br/>
+    <ion-list *ngFor="let item of interviewRef | async">
+      <ion-item style="background-color: #222;">
+        <h2 style="color: #FFFFFF;">{{item.idNumber}} called for {{item.jobName}} interview</h2>
+      </ion-item>
+    </ion-list>
+    <div class="spacer" style="height:60px;"></div>
+    </div>
+    
+
+    <div *ngIf="mun == 'user'">
+      <button (click)="checkBack()" ion-button color="dark" style="width: 19%;" float-right>Back</button>
+    <br/><h1>Interviews: </h1><br/>
+    <ion-list *ngFor="let item of hiringRef | async">
+      <ion-item style="background-color: #222;">
+          <h2 style="color: #FFFFFF;">{{item.jobName}} interview at {{item.compName}}</h2>
+      </ion-item>
+    </ion-list>
+    <div class="spacer" style="height:60px;"></div>
+
+    </div>
+    
+  </ion-content>
+
+  <!-- -------------------------------------------- -->
+  <ion-content *ngIf="num == 4" padding>
+
+      <button (click)="checkBack()" ion-button color="dark" style="width: 19%;" float-right>Back</button>
+
+    <h1>Job Details</h1><br/>
+    
+      <ion-item>
+        <ion-label>Job Position:</ion-label>
+          <ion-input type="text" #jobName [(ngModel)]="userDetail.jobName" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Description:</ion-label>
+          <ion-textarea type="text" style="height: 100px;" placeholder="(Rules and Regulations)"  #desc [(ngModel)]="userDetail.desc" [ngModelOptions]="{standalone: true}"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label>Highest Qualification:</ion-label>
+        <ion-select #reqSkill [(ngModel)]="userDetail.reqSkill" [ngModelOptions]="{standalone: true}">
+          <ion-option value="Master Degree">Master Degree</ion-option>
+          <ion-option value="Degree">Degree</ion-option>
+          <ion-option value="Higher Diploma">Higher Diploma</ion-option>
+          <ion-option value="Diploma">Diploma</ion-option>
+          <ion-option value="A'Level">A'Level</ion-option>
+          <ion-option value="O'Level">O'level</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Working Hours:</ion-label>
+          <ion-input type="text" placeholder="(Company Operating Hours)" #workHour disabled="true" [(ngModel)]="userDetail.workHour" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Gender:</ion-label>
+        <ion-select #gender [(ngModel)]="userDetail.gender" [ngModelOptions]="{standalone: true}">
+          <ion-option value="Female">Female</ion-option>
+          <ion-option value="Male">Male</ion-option>
+          <ion-option value="Male and Female">Any</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Age Range:</ion-label>
+          <ion-select #dob [(ngModel)]="userDetail.dob" [ngModelOptions]="{standalone: true}">
+          <ion-option value="1990">18 - 27</ion-option>
+          <ion-option value="1980">28 - 37</ion-option>
+          <ion-option value="1970">38 - 47</ion-option>
+          <ion-option value="1963">48 - 55</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Nationality:</ion-label>
+          <ion-select #nationality [(ngModel)]="userDetail.nationality" [ngModelOptions]="{standalone: true}">
+          <ion-option value="America">America</ion-option>
+          <ion-option value="British">British</ion-option>
+          <ion-option value="Brunei">Brunei</ion-option>
+          <ion-option value="Chinese">Chinese</ion-option>
+          <ion-option value="India">India</ion-option>
+          <ion-option value="Indonesia">Indonesia</ion-option>
+          <ion-option value="Malaysia">Malaysia</ion-option>
+          <ion-option value="Singapore">Singapore</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Marital Status:</ion-label>
+          <ion-select #marital [(ngModel)]="userDetail.marital" [ngModelOptions]="{standalone: true}">
+          <ion-option value="Single">Single</ion-option>
+          <ion-option value="Married">Married</ion-option>
+          <ion-option value="Divorced">Divorced</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Number of Hiring:</ion-label>
+          <ion-select #noApp [(ngModel)]="userDetail.noApp" [ngModelOptions]="{standalone: true}">
+          <ion-option value="1">1</ion-option>
+          <ion-option value="2">2</ion-option>
+          <ion-option value="3">3</ion-option>
+          <ion-option value="4">4</ion-option>
+          <ion-option value="5">5</ion-option>
+          <ion-option value="6">6</ion-option>
+          <ion-option value="7">7</ion-option>
+          <ion-option value="8">8</ion-option>
+          <ion-option value="9">9</ion-option>
+          <ion-option value="10">10</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Expiration Date:</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" min="2018" max="2035" style="border-bottom: solid silver 0.0165px;" #expDate [(ngModel)]="userDetail.expDate" [ngModelOptions]="{standalone: true}"></ion-datetime>
+      </ion-item><br/>
+      <button *ngIf="userDetail.jobName && userDetail.desc && userDetail.reqSkill && userDetail.gender && userDetail.dob && userDetail.nationality && userDetail.marital && userDetail.noApp && userDetail.expDate && userDetail.expDate != undefined" (click)="saveVacancy()" ion-button color="dark" style="width: 100%;">Save</button>
+      <div class="spacer" style="height:60px;"></div>
+      
+
+  </ion-content>
+
+    <!-- -------------------------------------------- -->
+  <ion-content *ngIf="num == 5" padding>
+
+      <button (click)="checkBack()" ion-button color="dark" style="width: 19%;" float-right>Back</button>
+
+    <h1>Job Details</h1><br/>
+    <ion-list *ngFor="let userDetail of vacanciesRef | async">
+      <div *ngIf="job == userDetail.idNumber">
+      <ion-item>
+        <ion-label>Job Position:</ion-label>
+          <ion-input type="text" #jobName [(ngModel)]="userDetail.jobName" [ngModelOptions]="{standalone: true}" disabled="true"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Description:</ion-label>
+          <ion-textarea type="text" style="height: 100px;" placeholder="(Rules and Regulations)"  #desc [(ngModel)]="userDetail.desc" [ngModelOptions]="{standalone: true}"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label>Highest Qualification:</ion-label>
+          <ion-select #reqSkill [(ngModel)]="userDetail.reqSkill" [ngModelOptions]="{standalone: true}">
+          <ion-option value="Master Degree">Master Degree</ion-option>
+          <ion-option value="Degree">Degree</ion-option>
+          <ion-option value="Higher Diploma">Higher Diploma</ion-option>
+          <ion-option value="Diploma">Diploma</ion-option>
+          <ion-option value="A'Level">A'Level</ion-option>
+          <ion-option value="O'Level">O'level</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Working Hours:</ion-label>
+          <ion-input type="text"  placeholder="(Company Operating Hours)" #workHour disabled="true" [(ngModel)]="userDetail.workHour" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Gender:</ion-label>
+        <ion-select #gender [(ngModel)]="userDetail.gender" [ngModelOptions]="{standalone: true}">
+          <ion-option value="Female">Female</ion-option>
+          <ion-option value="Male">Male</ion-option>
+          <ion-option value="Male and Female">Any</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Age Range:</ion-label>
+          <ion-select #dob [(ngModel)]="userDetail.dob" [ngModelOptions]="{standalone: true}">
+          <ion-option value="1990">18 - 27</ion-option>
+          <ion-option value="1980">28 - 37</ion-option>
+          <ion-option value="1970">38 - 47</ion-option>
+          <ion-option value="1963">48 - 55</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Nationality:</ion-label>
+          <ion-select #nationality [(ngModel)]="userDetail.nationality" [ngModelOptions]="{standalone: true}">
+          <ion-option value="America">America</ion-option>
+          <ion-option value="British">British</ion-option>
+          <ion-option value="Brunei">Brunei</ion-option>
+          <ion-option value="Chinese">Chinese</ion-option>
+          <ion-option value="India">India</ion-option>
+          <ion-option value="Indonesia">Indonesia</ion-option>
+          <ion-option value="Malaysia">Malaysia</ion-option>
+          <ion-option value="Singapore">Singapore</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Marital Status:</ion-label>
+          <ion-select #marital [(ngModel)]="userDetail.marital" [ngModelOptions]="{standalone: true}">
+          <ion-option value="Single">Single</ion-option>
+          <ion-option value="Married">Married</ion-option>
+          <ion-option value="Divorced">Divorced</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Number of Hiring:</ion-label>
+          <ion-select #noApp [(ngModel)]="userDetail.noApp" [ngModelOptions]="{standalone: true}">
+          <ion-option value="1">1</ion-option>
+          <ion-option value="2">2</ion-option>
+          <ion-option value="3">3</ion-option>
+          <ion-option value="4">4</ion-option>
+          <ion-option value="5">5</ion-option>
+          <ion-option value="6">6</ion-option>
+          <ion-option value="7">7</ion-option>
+          <ion-option value="8">8</ion-option>
+          <ion-option value="9">9</ion-option>
+          <ion-option value="10">10</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Expiration Date:</ion-label>
+        <ion-input type="text" value="{{userDetail.expDate}}" #expDate disabled="true" [(ngModel)]="userDetail.expDate" disabled="true" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item><br/>
+      <button *ngIf="userDetail.jobName && userDetail.desc && userDetail.reqSkill && userDetail.gender && userDetail.dob && userDetail.nationality && userDetail.marital && userDetail.noApp && userDetail.expDate && userDetail.expDate != ''" (click)="saveChangeVacancy(userDetail)" ion-button color="dark" style="width: 100%;">Save Change</button>
+      <div class="spacer" style="height:60px;"></div>
+    </div>
+    </ion-list>
+
+  </ion-content>
